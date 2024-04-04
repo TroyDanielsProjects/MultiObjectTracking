@@ -1,1 +1,1 @@
-This was my undergraduate thesis. I have uploaded the pdf explaining the problem, a solution and the results of my implementation. Not all code is here. The dataset must be gathered independently. The models and results are also not included.
+This was my undergraduate thesis. I have uploaded the pdf explaining the problem, a solution and the results of my implementation. The dataset the models trained on is not mine. Please see PDF for references.
