@@ -6,6 +6,7 @@ import numpy as np
 import testBBRData
 
 
+# perform multi-object detection in a given image
 def multiObjDetectionInImage(objThreshold, iouThreshold, image):
 
     images ,segementCoordinates = ModelFunctions.segmentImage(image)
@@ -52,7 +53,7 @@ def multiObjDetectionInImage(objThreshold, iouThreshold, image):
         
 
 
-
+# perform multi-object detection in a preset image
 def multiObjectDetection(fileName, path = "./multi_person_images/", objThreshold = 0.5, overlapThreshold = 0.4):
     ofile = open(fileName)
     images = []

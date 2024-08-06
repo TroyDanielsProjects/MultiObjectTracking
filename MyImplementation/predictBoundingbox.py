@@ -8,7 +8,7 @@ import math
 
 (training_data, training_labels), (testing_data, testing_labels), (validation_data, validation_labels) = ModelFunctions.load_data()
 
-
+# calculate the Interection over Union metrics of the model
 def IoUMetric(testing_data, testing_labels, model_name = "my_bounding_box_model"):
     model = keras.models.load_model(model_name)
     average_IoU = 0
@@ -27,7 +27,7 @@ def IoUMetric(testing_data, testing_labels, model_name = "my_bounding_box_model"
     standardDeviation/=len(y_pred)
     standardDeviation = math.sqrt(standardDeviation)
     print(f'The average intersection over union is {average_IoU} with the Standard deviation of {standardDeviation}')
-
+# see the predicted bounding box on real images
 def seePredBbox(testing_data, testing_labels, model_name = "my_bounding_box_model"):
     model = keras.models.load_model(model_name)
     y_pred = model.predict(testing_data)

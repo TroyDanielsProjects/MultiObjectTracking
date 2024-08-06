@@ -1,5 +1,7 @@
 """
 Author: Troy Daniels
+
+Create a CNN Architecture and train the model on the data
 """
 import ModelFunctions
 import tensorflow as tf
@@ -7,8 +9,10 @@ from tensorflow import keras
 import matplotlib.pyplot as plt
 import pandas as pd
 
+# load dataset and split
 (training_data, training_labels), (testing_data, testing_labels), (validation_data, validation_labels) = ModelFunctions.load_data()
 
+# create the CNN
 model = keras.Sequential([
     tf.keras.layers.Conv2D(24, kernel_size=(3,3), padding='same',activation='relu',
                            input_shape=(256,256,3)),
@@ -36,7 +40,7 @@ model = keras.Sequential([
     tf.keras.layers.Dense(32, activation='relu'),
     tf.keras.layers.Dense(4)
     ])
-
+# compile, present, train  and then show loss in a graph
 model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3), loss=tf.keras.losses.MeanSquaredError())
 model.summary()
 # tf.keras.utils.plot_model(model,to_file="my_model.png")

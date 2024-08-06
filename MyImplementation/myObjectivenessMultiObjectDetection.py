@@ -5,7 +5,7 @@ import ModelFunctions
 import numpy as np
 import testBBRData
 
-
+# perform multi-object detection with my implementation of an objectiveness score and my own CNN architecture
 def multiObjDetectionInImageWMyObjectivnessScore(objThreshold, iouThreshold, image):
 
     images ,segementCoordinates = ModelFunctions.segmentImage(image)
@@ -51,7 +51,7 @@ def multiObjDetectionInImageWMyObjectivnessScore(objThreshold, iouThreshold, ima
         
 
 
-
+# perform multi-object detection with my implementation of an objectiveness score and my own CNN architecture
 def multiObjectDetectionWMyObjScore(fileName, path = "./multi_person_images/", objThreshold = 0.5, overlapThreshold = 0.2):
     ofile = open(fileName)
     images = []

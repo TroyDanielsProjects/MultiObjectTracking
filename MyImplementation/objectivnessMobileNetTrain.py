@@ -6,6 +6,7 @@ from tensorflow.keras.applications import MobileNetV2
 import matplotlib.pyplot as plt
 import pandas as pd
 
+# Train the objectiveness score Mobile Net model
 def build_model(input_shape):
     inputs= L.Input(input_shape)
     print(inputs.shape)

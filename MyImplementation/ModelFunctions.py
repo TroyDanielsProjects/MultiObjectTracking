@@ -141,7 +141,7 @@ def filter_data(images,labels):
             imagesToReturn.append(images[i])
     return imagesToReturn,labelsToReturn
 
-        
+# calculates intersection over union        
 def IoU(bbox_true, bbox_pred):
 
     x1_true = bbox_true[0]
@@ -168,7 +168,7 @@ def IoU(bbox_true, bbox_pred):
     union = ( (x2_true - x1_true) * (y2_true - y1_true) + (x2_pred - x1_pred) * (y2_pred - y1_pred) - intersection)
     return intersection / union
 
-
+# calculates the overlap of two bounding boxes in an image and normalizes it between 0-1
 def normalizedOverlap(bbox_true, bbox_pred):
 
     x1_true = bbox_true[0]
@@ -209,12 +209,12 @@ def shuffleData(list_data,list_labels):
         dataToReturn.append(list_data[randNum])
         labelsToReturn.append(list_labels[randNum])
     return dataToReturn, labelsToReturn
-
+# - resizes an image and then normalizes the pixel values
 def proccessImage(image):
     image = cv.resize(image, (256,256))
     image = (image - 127.5) / 127.5
     return copy.deepcopy(image)
-
+# - breaks an image up into many segments
 def segmentImage(image):
     images = []
     segmentCoordinates = []
@@ -226,7 +226,7 @@ def segmentImage(image):
     slidefilter(image, images, 5, segmentCoordinates)
     return images, segmentCoordinates
 
-
+# - segments of the image by sliding a filter over it where each filter iteration becomes a new image
 def slidefilter(image, images, segmentQuoiant,segmentCoordinates):
     H, W, C = image.shape
     segmentHeight = math.floor(H/segmentQuoiant)
@@ -245,6 +245,7 @@ def slidefilter(image, images, segmentQuoiant,segmentCoordinates):
             segmentCoordinates.append(segmentCoordinate)
     return segmentCoordinates
 
+# given a normalized bbox, find the actual pixel coordinates of the bbox for the image
 def relocateBbox(bbox, segmentCoordinates):
     segmentHeight = segmentCoordinates[0][0]
     segmentWidth = segmentCoordinates[0][1]
@@ -266,13 +267,14 @@ def splitImagesWithBoundingBox(filter_zero_lables=True, skip_data=0):
     if skip_data>0:
         for i in range(skip_data):
             ofile.readline()
+    # grab the bbox for each image
     for line in ofile:
         bboxdata =line.split(",")
         x1_bbox = int(bboxdata[1])
         y1_bbox = int(bboxdata[2])
         x2_bbox = int(bboxdata[3])
         y2_bbox = int(bboxdata[4])
-
+        # normalize the bbox and set the size of the segements to be captured
         imgName = bboxdata[0]
         imgPath = "./archive/images/" + imgName
         image = cv.imread(imgPath)
@@ -282,7 +284,7 @@ def splitImagesWithBoundingBox(filter_zero_lables=True, skip_data=0):
         segmentSize = min(math.floor(H/1.5),math.floor(W/1.5))
         segmentLocation = []
         image_segments = []
-
+        # create segments for each image and normailze the segments
         for i in range(segmentSize, H ,one_sixth_image_height):
             for j in range(segmentSize, W, one_sixth_image_width  ) :
                 temp_image = copy.deepcopy(image[i-segmentSize:i,j-segmentSize:j])
@@ -292,10 +294,10 @@ def splitImagesWithBoundingBox(filter_zero_lables=True, skip_data=0):
 
                 segmentLocation.append( (j - segmentSize,i - segmentSize ) )
                 image_segments.append(temp_image)
-
+        # load the pretrained model and use it to predict the bounding box of each segment
         boundingBoxModel = keras.models.load_model("MobileNet_bounding_box_model.hs")
         predictedBoundingBoxes = boundingBoxModel.predict(np.array(image_segments))
-
+        
         for i in range(len(predictedBoundingBoxes)):
 
             x1_segment = predictedBoundingBoxes[i][0] * 255

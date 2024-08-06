@@ -1,3 +1,7 @@
+"""
+This class is used for presentation purposes only, used during my thesis presentation.
+"""
+
 import cv2 as cv
 import random
 import copy
